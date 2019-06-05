@@ -1,5 +1,7 @@
 package com.decathlon.MeetUpSpring.controller;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,13 +35,17 @@ public class EventController {
 
 	@PostMapping("/events") 
 	@ResponseStatus(HttpStatus.CREATED) // 201
-		public EventDTO addNewEvent(@RequestBody EventDTO eventDTO) {
-			return eventService.create(eventDTO);
+		public EventDTO addNewEvent(@RequestBody EventDTO eventDTO) throws Exception {
+		
+		 Event tmpEvent =eventService.create(convertToEvent(eventDTO));
+		 return convertToEventDto(tmpEvent);
 		};
 	
 		
-//	@GetMapping("/events")
-//		public
+	@GetMapping("/events")
+		public List<Event> getEvents() {
+			return eventService.getEvents();
+	}
 	
 		
 		private EventDTO convertToEventDto(Event event) {

@@ -1,5 +1,6 @@
 package com.decathlon.MeetUpSpring.configuration;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 

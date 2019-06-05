@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 
@@ -14,7 +16,7 @@ import lombok.Data;
 public class Event {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EnventSeq")
+	@GeneratedValue // si on utilise une sequence (strategy=GenerationType.SEQUENCE, generator="EnventSeq")
 	private Long id;
 	private String name;
 	private LocalDateTime begin_date;
@@ -22,6 +24,8 @@ public class Event {
 	private int attendees_limit;
 	private int attendees_number;
 	private String event_description;
-	private String owner;
+	@ManyToOne
+	@JoinColumn(name = "owner_id")
+	private User owner;
 	private String location;
 }
