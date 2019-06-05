@@ -23,7 +23,7 @@ public class EventController {
 	private EventService eventService;
 	private ModelMapper eventMapper;
 	
-	// pour eviter @Autowired
+	// pour eviter @Autowired 
 	public EventController(EventService eventService, ModelMapper eventMapper) {
 		this.eventService = eventService;
 		this.eventMapper = eventMapper;

@@ -24,18 +24,18 @@ public class EventService {
 	public Event create(Event event) throws OwnerIdNullException {
 
 		Long userId = event.getOwner().getId();
-		
+
 		if (userId == null) {
 			throw new OwnerIdNullException();
-		} else {
-			Optional<User> user = userRepository.findById(userId);
-			if (!user.isPresent()) {
-				throw new OwnerIdNullException();
-			} else {
-				event.setOwner(user.get());
-				return eventRepository.save(event);
-			}
 		}
+
+		Optional<User> user = userRepository.findById(userId);
+		if (!user.isPresent()) {
+			throw new OwnerIdNullException();
+		}
+		
+		event.setOwner(user.get());
+		return eventRepository.save(event);
 	}
 
 	public List<Event> getEvents() {
