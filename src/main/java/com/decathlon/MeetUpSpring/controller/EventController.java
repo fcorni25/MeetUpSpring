@@ -2,6 +2,7 @@ package com.decathlon.MeetUpSpring.controller;
 
 import java.util.List;
 
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.decathlon.MeetUpSpring.dto.EventDTO;
 import com.decathlon.MeetUpSpring.models.Event;
+import com.decathlon.MeetUpSpring.models.User;
 import com.decathlon.MeetUpSpring.service.EventService;
 
 @RestController
@@ -49,11 +51,17 @@ public class EventController {
 	
 		
 		private EventDTO convertToEventDto(Event event) {
-		    return eventMapper.map(event, EventDTO.class);
+			EventDTO eventMapDTO = eventMapper.map(event, EventDTO.class);
+			eventMapDTO.setOwner_id(event.getOwner().getId());
+			return eventMapDTO;
 		  }
 
 		  private Event convertToEvent(EventDTO eventDTO) {
-		    return eventMapper.map(eventDTO, Event.class);
+		  Event eventMap = eventMapper.map(eventDTO, Event.class);
+		  User user = new User();
+		  user.setId(eventDTO.getOwner_id());
+		  eventMap.setOwner(user);
+		  return eventMap;
 		  }
 	
 		

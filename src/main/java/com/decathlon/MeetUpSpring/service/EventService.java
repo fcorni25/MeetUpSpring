@@ -1,54 +1,54 @@
 package com.decathlon.MeetUpSpring.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.decathlon.MeetUpSpring.dto.EventDTO;
 import com.decathlon.MeetUpSpring.exceptions.OwnerIdNullException;
 import com.decathlon.MeetUpSpring.models.Event;
+import com.decathlon.MeetUpSpring.models.User;
 import com.decathlon.MeetUpSpring.repository.EventRepository;
+import com.decathlon.MeetUpSpring.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor // pour générer le constructeur à la place de @Autowired
 public class EventService {
-	
-	private EventRepository eventRepository;
 
+	private EventRepository eventRepository;
+	private UserRepository userRepository;
 
 	public Event create(Event event) throws OwnerIdNullException {
+
+		Long userId = event.getOwner().getId();
 		
-		// récupérer le owner du formulaire
-		// vérifier existance dans la bdd
-		
-		 if ( event.getOwner().getId() == null) {
-			 throw new OwnerIdNullException();
-	
-		 }
-		 
-		 
-		
-		// s'il n'existe pas on le crée
-		// sinon on save
-		
-		return eventRepository.save(event);
+		if (userId == null) {
+			throw new OwnerIdNullException();
+		} else {
+			Optional<User> user = userRepository.findById(userId);
+			if (!user.isPresent()) {
+				throw new OwnerIdNullException();
+			} else {
+				event.setOwner(user.get());
+				return eventRepository.save(event);
+			}
+		}
 	}
 
 	public List<Event> getEvents() {
 		// TODO Auto-generated method stub
 		return eventRepository.findAll();
 	}
-	
-	
 
 //	public EventDTO create(EventDTO eventDTO) {
 //		Event eventAItnitier = eventConverterDtoToModel(eventDTO);
 //		Event save = eventRepository.save(eventAItnitier);
 //		return eventConverterModelToDTO(save);
 //	}
-	
+
 //	private Event eventConverterDtoToModel(EventDTO eventDTO) {
 //		
 //		Event event = new Event();
@@ -62,7 +62,7 @@ public class EventService {
 //		event.setOwner(eventDTO.getOwner());
 //		return event;
 //	}
-	
+
 //	private EventDTO eventConverterModelToDTO(Event event) {
 //		
 //		EventDTO eventDTO = new EventDTO();
@@ -77,5 +77,4 @@ public class EventService {
 //		eventDTO.setOwner(event.getOwner());
 //		return eventDTO;
 //	}
-	}
-	
+}

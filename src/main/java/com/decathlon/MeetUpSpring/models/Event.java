@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -26,6 +27,7 @@ public class Event {
 	private String event_description;
 	@ManyToOne
 	@JoinColumn(name = "owner_id")
+	@NotNull(message = "Owner must not be null")
 	private User owner;
 	private String location;
 }

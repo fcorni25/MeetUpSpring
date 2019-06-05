@@ -3,6 +3,10 @@ package com.decathlon.MeetUpSpring.dto;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotNull;
+
+import com.decathlon.MeetUpSpring.models.User;
+
 import lombok.Data;
 
 @Data
@@ -15,6 +19,7 @@ public class EventDTO {
 	private int attendees_limit;
 	private int attendees_number;
 	private String event_description;
-	private String owner;
+	@NotNull(message = "Owner must not be null")
+	private Long owner_id;
 	private String location;
 }
